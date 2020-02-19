@@ -1,2 +1,12 @@
-<h1>Campaigns</h1>
-<p><a href="/campaigns/add"> Add a New Campaign</p>
+<h1>{{title}}</h1>
+<p><a href="/campaigns/add"> Add a New Campaign</a></p>
+
+<p>Here is a listing of all of the Campaigns</p>
+
+<ul>
+
+{{#each campaignlist }}
+    <li>{{ key }}: <a href="campaigns/view?key={{ key }}">{{ title }}</a></li>
+{{/each}}
+
+</ul>

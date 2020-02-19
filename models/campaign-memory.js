@@ -11,7 +11,7 @@ exports.read = async function (key) {
     return campaigns[key];  
 };
 
-exports.keyList = async function() { return Object.keys(campaigns); };
+exports.keylist = async function() { return Object.keys(campaigns); };
 
 exports.count = async function () { return campaigns.length; };
 

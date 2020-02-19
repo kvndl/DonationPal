@@ -3,8 +3,16 @@ var router = express.Router();
 const campaigns = require('../models/campaign-memory');
 
 /* GET listing of all campaigns */
-router.get('/', function(req, res, next) {
-    res.render('campaigns/index', { });
+router.get('/', async function(req, res, next) {
+
+    let keylist = await campaigns.keylist();
+    let keyPromises = keylist.map( key => {
+        return campaigns.read(key);
+    });
+
+    let campaignlist = await Promise.all(keyPromises);
+
+    res.render('campaigns/index', { title: "My Campaigns", campaignlist: campaignlist});
 });
 
 /* GET view a single campaign */
@@ -26,7 +34,6 @@ router.post('/save', async (req, res, next) => {
     res.redirect('/campaigns/view?key=' + req.body.campaignkey);
 
     console.log("Saving a new campaign.");
-    res.send("Adding a new campaign.");
 });
 
 module.exports = router;
