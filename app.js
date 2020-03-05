@@ -35,7 +35,11 @@ app.use(session({
   resave: true,
   saveUninitialized: true,
   cookie: { maxAge: 1000 *60 *60 *24 *7 *2 } // two weeks to live
-}))
+}));
+
+// Passport Setup
+app.use(passport.initialize());
+app.use(passport.session());
 
 // View Engine Setup
 app.set('views', path.join(__dirname, 'views'));
