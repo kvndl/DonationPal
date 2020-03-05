@@ -10,29 +10,50 @@ const logger = require('morgan');
 const session = require('express-session');
 const MongoStore = require('connect-mongo')(session);
 const passport = require('passport');
+const mongo = require('./services/db');
 
 // Routers
 const indexRouter = require('./routes/index');
 const usersRouter = require('./routes/users');
 const campaignsRouter = require('./routes/campaigns');
 
+// General Setup
 const app = express();
 
-// view engine setup
+// Database Config
+async function startDB() {
+  await mongo.init();
+}
+startDB();
+
+// Session Setup
+app.use(session({
+  store: new MongoStore({
+    url: process.env.MONGO_CONNECTION_STRING
+  }),
+  secret: process.env.SECRET,
+  resave: true,
+  saveUninitialized: true,
+  cookie: { maxAge: 1000 *60 *60 *24 *7 *2 } // two weeks to live
+}))
+
+// View Engine Setup
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'hbs');
 
+// Middleware
 app.use(logger('dev'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
+// Router Middleware
 app.use('/', indexRouter);
 app.use('/users', usersRouter);
 app.use('/campaigns', campaignsRouter);
 
-// catch 404 and forward to error handler
+// Error Handling
 app.use(function(req, res, next) {
   next(createError(404));
 });
