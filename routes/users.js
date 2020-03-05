@@ -2,10 +2,16 @@ var express = require('express');
 var router = express.Router();
 const passport = require('passport');
 const GoogleStrategy = require('passport-google-oauth').OAuth2Strategy;
+const User = require('../models/user');
 
 /* GET users listing. */
 router.get('/', function(req, res, next) {
-  res.send('This will be the user profile eventually.');
+  if (req.isAuthenticated()) {
+    niceUser = new User(req.user);
+    res.render('user-profile', { user: niceUser });
+  } else {
+    res.render('user-noprofile');
+  }
 });
 
 // Get login request
@@ -21,11 +27,23 @@ router.get('/return',
   // callback -- what happens after we have authenticated user
   async function(req, res) {
 
-    console.log(JSON.stringify(req.user, null, 1));
-    res.send('Login successful.');
+    // See if user is in database
+    var userExists = await User.checkUserExists(req.user.id);
+
+    if (userExists == false) {
+      var newUser = await User.addUser(req.user);
+    }
+
+    res.redirect('./');
 
   }
 );
+
+/* GET logout request. */
+router.get('/logout', function(req, res, next) {
+  req.logout();
+  res.redirect('./');
+});
 
 // Passport Helper Methods
 /**
