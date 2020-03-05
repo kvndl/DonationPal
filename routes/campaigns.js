@@ -1,6 +1,7 @@
 var express = require('express');
 var router = express.Router();
 const campaigns = require('../models/campaign-memory');
+const User = require('../models/user');
 
 /* GET listing of all campaigns */
 router.get('/', async function(req, res, next) {
@@ -11,8 +12,14 @@ router.get('/', async function(req, res, next) {
     });
 
     let campaignlist = await Promise.all(keyPromises);
-
-    res.render('campaigns/index', { title: "My Campaigns", campaignlist: campaignlist});
+    // check if user is logged in
+    if (req.isAuthenticated()) {
+        niceUser = new User(req.user);
+        res.render('campaigns/index', { title: "My Campaigns", campaignlist: campaignlist, user: niceUser});
+    } else {
+        res.render('user-noprofile');
+    }
+    
 });
 
 /* GET view a single campaign */
