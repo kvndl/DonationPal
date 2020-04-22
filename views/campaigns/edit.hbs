@@ -1,27 +1,22 @@
 <br /><br /><br />
 <div class="h-100 row text-light">
     <div class="col parent">
-        <h1>{{title}}</h1>
-        <form method='POST' action='/campaigns/save'>
+        <div style="width: 80vw;">
+            <h1>{{title}}</h1>
+            <form method='POST' action='/campaigns/save'>
 
-            <div class="form-group">
-                <p> Key:
-                    <input class="form-control" type='text' name='campaignkey' value='' />
-                </p>
-            </div>
-
-            <div class="form-group">
-                <p> Title:
+                <div class="form-group">
+                    <p>Title</p>
                     <input class="form-control" type='text' name='title' value='' />
-                </p>
-            </div>
+                </div>
+                <div class="form-group">
+                    <p>Description</p>
+                    <textarea class="form-control" rows=3 cols=30 name='campaigndetail'></textarea>
+                </div>
 
-            <div class="form-group">
-                <textarea class="form-control" rows=3 cols=30 name='campaigndetail'></textarea>
-            </div>
+                <input class="btn btn-primary" type='submit' value='Submit' />
 
-            <input class="btn btn-primary" type='submit' value='Submit' />
-
-        </form>
+            </form>
+        </div>
     </div>
 </div>

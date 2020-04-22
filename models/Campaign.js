@@ -2,13 +2,6 @@ const dbService = require('../services/db');
 
 class Campaign {
 
-    // constructor(campaignData) {
-    //     this.key = campaignData.key;
-    //     this.userID = campaignData.userID;
-    //     this.title = campaignData.title;
-    //     this.campaigndetail = campaignData.campaigndetail;
-    // }
-
     static async addCampaign(campaignData) {
         const newCampaign = await dbService.db.collection('campaigns').insertOne(campaignData);
         return newCampaign;

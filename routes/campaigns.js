@@ -57,14 +57,28 @@ router.get('/add', function(req, res, next) {
 router.post('/save', async (req, res, next) => {
     // Logic to save new campaign
     var campaign;
+    let theKey = await makeid(5);
     campaign = await Campaigns.addCampaign({
-        key: req.body.campaignkey,
+        key: theKey,
         title: req.body.title,
         campaigndetail: req.body.campaigndetail
     });
-    res.redirect('/campaigns/view?key=' + req.body.campaignkey);
+    res.redirect('/campaigns/view?key=' + theKey);
 
     console.log("--- Saving a new campaign ---");
 });
 
 module.exports = router;
+
+// Helper Functions
+
+function makeid(length) {
+    var result           = '';
+    var characters       = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+    var charactersLength = characters.length;
+    for ( var i = 0; i < length; i++ ) {
+       result += characters.charAt(Math.floor(Math.random() * charactersLength));
+    }
+    console.log('--- Unique ID generated: ' + result + ' ---');
+    return result;
+}
