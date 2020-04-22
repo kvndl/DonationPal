@@ -25,9 +25,10 @@ router.get('/', async function(req, res, next) {
         var getCampaigns = await Campaigns.getCampaigns();
         res.render('campaigns/index',
         { 
-            title: "My Campaigns",
+            title: "All Campaigns",
             campaignlist: getCampaigns,
-            user: niceUser
+            user: niceUser,
+            
         });
     } else {
         res.render('user-noprofile');
@@ -42,7 +43,8 @@ router.get('/view', async function(req, res, next) {
     { 
         title: campaign[0].title,
         campaignkey: campaign[0].key,
-        campaigndetail: campaign[0].campaigndetail
+        campaigndetail: campaign[0].campaigndetail,
+        goalAmount: campaign[0].goalAmount
     });
 });
 
@@ -61,6 +63,7 @@ router.post('/save', async (req, res, next) => {
     campaign = await Campaigns.addCampaign({
         key: theKey,
         title: req.body.title,
+        goalAmount: req.body.goalAmount,
         campaigndetail: req.body.campaigndetail
     });
     res.redirect('/campaigns/view?key=' + theKey);

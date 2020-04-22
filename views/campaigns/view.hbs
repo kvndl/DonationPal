@@ -1,14 +1,22 @@
 <br /><br /><br />
-<div class="h-100 row text-light">
-    <div class="col parent">
-        <br />
-        <div style="width: 80vw;">
+<div class="container">
+    <div class="row text-light">
+        <div class="col">
+            <br />
             <h1>{{ title }}</h1>
 
             <p>Key: {{ campaignkey }}</p>
 
             <p>{{ campaigndetail }}</p>
-            <a href="/campaigns" class="btn btn-danger">Back to list</a>
+            {{#if goalAmount}}
+            <p>Goal Amount: ${{ goalAmount }}</p>
+            {{/if}}
+
+            <a href="/campaigns" class="btn btn-danger">
+                <img src="https://svgshare.com/i/KL6.svg" alt="back icon" class="d-inline-block" width="20"
+                    height="20" />
+                Back to list</a>
+            <a href="/campaigns/donate" class="btn btn-success">Make a donation</a>
         </div>
     </div>
 </div>

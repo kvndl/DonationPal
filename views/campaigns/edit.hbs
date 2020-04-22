@@ -1,21 +1,34 @@
 <br /><br /><br />
-<div class="h-100 row text-light">
-    <div class="col parent">
-        <div style="width: 80vw;">
+<div class="container">
+    <div class="row text-light">
+        <div class="col">
             <h1>{{title}}</h1>
             <form method='POST' action='/campaigns/save'>
-
                 <div class="form-group">
-                    <p>Title</p>
-                    <input class="form-control" type='text' name='title' value='' />
+                    <label for="titleInput">Title</label>
+                    <input class="form-control" type='text' name='title' value='' id="titleInput"
+                        placeholder="Give this beauty a name" required />
                 </div>
                 <div class="form-group">
-                    <p>Description</p>
-                    <textarea class="form-control" rows=3 cols=30 name='campaigndetail'></textarea>
+                    <label for="goalAmount">Goal Amount</label>
+                    <select class="form-control" id="goalAmount" name="goalAmount">
+                        <option value=5>$5</option>
+                        <option value=50>$50</option>
+                        <option value=500>$500</option>
+                        <option value=888>$888</option>
+                        <option value=5000>$5000</option>
+                    </select>
                 </div>
-
-                <input class="btn btn-primary" type='submit' value='Submit' />
-
+                <div class="form-group">
+                    <label for="descInput">Description</label>
+                    <textarea class="form-control" rows=3 cols=30 name='campaigndetail' id="descInput"
+                        placeholder="Why do you need other human's money?" required></textarea>
+                </div>
+                <a href="/campaigns" class="btn btn-danger">
+                    <img src="https://svgshare.com/i/KL6.svg" alt="back icon" class="d-inline-block" width="20"
+                        height="20" />
+                    Back to list</a>
+                <input class="btn btn-success" type='submit' value='Submit' />
             </form>
         </div>
     </div>
