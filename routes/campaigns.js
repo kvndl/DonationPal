@@ -15,7 +15,12 @@ router.get('/', async function(req, res, next) {
     // check if user is logged in
     if (req.isAuthenticated()) {
         niceUser = new User(req.user);
-        res.render('campaigns/index', { title: "My Campaigns", campaignlist: campaignlist, user: niceUser});
+        res.render('campaigns/index',
+        { 
+            title: "My Campaigns",
+            campaignlist: campaignlist,
+            user: niceUser
+        });
     } else {
         res.render('user-noprofile');
     }
@@ -25,12 +30,19 @@ router.get('/', async function(req, res, next) {
 /* GET view a single campaign */
 router.get('/view', async function(req, res, next) {
     var campaign = await campaigns.read(req.query.key);
-    res.render('campaigns/view', { title: campaign.title, campaignkey: campaign.key, campaigndetail: campaign.campaigndetail });
+    res.render('campaigns/view',
+    { 
+        title: campaign.title,
+        campaignkey: campaign.key,
+        campaigndetail: campaign.campaigndetail
+    });
 });
 
 // GET to the add campaign form
 router.get('/add', function(req, res, next) {
-    res.render('campaigns/edit', { title: "Add a Campaign" });
+    if (req.isAuthenticated()) {
+        res.render('campaigns/edit', { title: "Add a Campaign" });
+    }
 });
 
 // POST to add a new campaign

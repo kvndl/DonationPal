@@ -1,8 +1,31 @@
 body {
-  padding: 50px;
-  font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
+  /* padding: 50px;
+  font: 14px "Lucida Grande", Helvetica, Arial, sans-serif; */
+  font-family: 'Ubuntu', sans-serif !important;
+  background-color: #383C40 !important;
+}
+
+.parent {
+  width: 75vw;
+  padding-left: 10%;
+  text-align: center;
+}
+
+.parent > img {
+  vertical-align: middle;
+}
+
+.parent > h4 {
+    display:inline-block;
 }
 
 a {
-  color: #00B7FF;
+  /* color: #00B7FF; */
+  color: red;
+}
+
+#centerThis {
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
 }

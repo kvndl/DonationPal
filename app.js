@@ -16,6 +16,7 @@ const mongo = require('./services/db');
 const indexRouter = require('./routes/index');
 const usersRouter = require('./routes/users');
 const campaignsRouter = require('./routes/campaigns');
+const searchRouter = require('./routes/search');
 
 // General Setup
 const app = express();
@@ -56,6 +57,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use('/', indexRouter);
 app.use('/users', usersRouter);
 app.use('/campaigns', campaignsRouter);
+app.use('/search', searchRouter);
 
 // Error Handling
 app.use(function(req, res, next) {

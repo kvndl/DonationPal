@@ -56,7 +56,8 @@ router.get('/logout', function(req, res, next) {
 passport.use(new GoogleStrategy({
     clientID: process.env.GOOGLE_CLIENT_ID,
     clientSecret: process.env.GOOGLE_CLIENT_SECRET,
-    callbackURL: 'https://8081-dot-10520905-dot-devshell.appspot.com/users/return'
+    // callbackURL: 'https://8081-dot-10520905-dot-devshell.appspot.com/users/return'
+    callbackURL: 'http://localhost:8081/users/return'
   },
   function(accessToken, refreshToken, profile, callback) {
     // This will return the user's Google profile
