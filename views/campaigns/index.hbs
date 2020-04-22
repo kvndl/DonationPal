@@ -1,19 +1,21 @@
-<br/><br/><br/>
+<br /><br /><br />
 <div class="h-100 row text-light">
-    <div class="col">
+    <div class="col parent">
         <br />
         <div>
             <h1>{{title}}</h1>
-            <p><a href="/campaigns/add"> Add a New Campaign</a></p>
-            <br/>
+            <br />
+            <a href="/campaigns/add" class="btn btn-primary">Add New Campaign</a>
+            <br /><br />
             <p>Here is a listing of all of the Campaigns</p>
-            <ul>
-
-                {{#each campaignlist }}
-                <li>{{ key }}: <a href="campaigns/view?key={{ key }}">{{ title }}</a></li>
-                {{/each}}
-
-            </ul>
+            <br />
+            <div class="card" style="width: 18rem;">
+                <ul class="list-group list-group-flush text-dark">
+                    {{#each campaignlist }}
+                        <li class="list-group-item">{{ key }}: <a href="campaigns/view?key={{ key }}">{{ title }}</a></li>
+                    {{/each}}
+                </ul>
+            </div>
         </div>
     </div>
 </div>

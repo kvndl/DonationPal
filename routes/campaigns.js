@@ -1,24 +1,32 @@
 var express = require('express');
 var router = express.Router();
-const campaigns = require('../models/campaign-memory');
+// const campaigns = require('../models/campaign-memory');
+const Campaigns = require('../models/Campaign');
 const User = require('../models/user');
 
 /* GET listing of all campaigns */
 router.get('/', async function(req, res, next) {
 
-    let keylist = await campaigns.keylist();
-    let keyPromises = keylist.map( key => {
-        return campaigns.read(key);
-    });
+    // let keylist = await campaigns.keylist();
+    // let keyPromises = keylist.map( key => {
+    //     return campaigns.read(key);
+    // });
 
-    let campaignlist = await Promise.all(keyPromises);
+    // let campaignlist = await Promise.all(keyPromises);
+    // const campaignlisting = async () => {
+    //     const everything = await dbService.db.collection('campaigns').find({});
+    //     console.log("--- Everything from Mongo " + everything);
+    //     return everything;
+    // }
+
     // check if user is logged in
     if (req.isAuthenticated()) {
         niceUser = new User(req.user);
+        var getCampaigns = await Campaigns.getCampaigns();
         res.render('campaigns/index',
         { 
             title: "My Campaigns",
-            campaignlist: campaignlist,
+            campaignlist: getCampaigns,
             user: niceUser
         });
     } else {
@@ -29,12 +37,12 @@ router.get('/', async function(req, res, next) {
 
 /* GET view a single campaign */
 router.get('/view', async function(req, res, next) {
-    var campaign = await campaigns.read(req.query.key);
+    var campaign = await Campaigns.viewSingleCampaign(req.query.key);
     res.render('campaigns/view',
     { 
-        title: campaign.title,
-        campaignkey: campaign.key,
-        campaigndetail: campaign.campaigndetail
+        title: campaign[0].title,
+        campaignkey: campaign[0].key,
+        campaigndetail: campaign[0].campaigndetail
     });
 });
 
@@ -49,10 +57,14 @@ router.get('/add', function(req, res, next) {
 router.post('/save', async (req, res, next) => {
     // Logic to save new campaign
     var campaign;
-    campaign = await campaigns.create(req.body.campaignkey, req.body.title, req.body.campaigndetail);
+    campaign = await Campaigns.addCampaign({
+        key: req.body.campaignkey,
+        title: req.body.title,
+        campaigndetail: req.body.campaigndetail
+    });
     res.redirect('/campaigns/view?key=' + req.body.campaignkey);
 
-    console.log("Saving a new campaign.");
+    console.log("--- Saving a new campaign ---");
 });
 
 module.exports = router;

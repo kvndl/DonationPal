@@ -2,12 +2,12 @@ const dbService = require('../services/db');
 
 class Campaign {
 
-    constructor(campaignData) {
-        this.key = campaignData.key;
-        this.userID = campaignData.userID;
-        this.title = campaignData.title;
-        this.campaigndetail = campaignData.campaigndetail;
-    }
+    // constructor(campaignData) {
+    //     this.key = campaignData.key;
+    //     this.userID = campaignData.userID;
+    //     this.title = campaignData.title;
+    //     this.campaigndetail = campaignData.campaigndetail;
+    // }
 
     static async addCampaign(campaignData) {
         const newCampaign = await dbService.db.collection('campaigns').insertOne(campaignData);
@@ -23,6 +23,20 @@ class Campaign {
             return false;
         }
     }
+
+    static async getCampaigns() {
+        const everything = await dbService.db.collection('campaigns').find({}).toArray();
+        console.log("--- Everything from Mongo " + JSON.stringify(everything, null, 1));
+        return everything;
+    }
+
+    static async viewSingleCampaign(theKey) {
+        const single = await dbService.db.collection('campaigns').find({key: theKey}).toArray();
+        // const singleData = JSON.parse(single);
+        console.log("--- Single document found " + JSON.stringify(single, null, 1));
+        return single;
+    }
+
 }
 
 module.exports = Campaign;

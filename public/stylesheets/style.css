@@ -6,9 +6,9 @@ body {
 }
 
 .parent {
-  width: 75vw;
-  padding-left: 10%;
-  text-align: center;
+  width: 75vw !important;
+  padding-left: 10% !important;
+  text-align: center !important;
 }
 
 .parent > img {
