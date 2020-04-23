@@ -64,7 +64,7 @@ router.post('/save', async (req, res, next) => {
         goalAmount: req.body.goalAmount,
         campaigndetail: req.body.campaigndetail
     });
-    res.redirect('/campaigns/view?key=' + theKey);
+    res.redirect('/campaigns/view?key=' + req.body.key);
 
     console.log("--- Saving a new campaign ---");
 });
