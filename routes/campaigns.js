@@ -16,8 +16,7 @@ router.get('/', async function(req, res, next) {
         { 
             title: "All Campaigns",
             campaignlist: getCampaigns,
-            user: niceUser,
-            
+            user: niceUser            
         });
     } else {
         res.render('user-noprofile');
@@ -28,12 +27,16 @@ router.get('/', async function(req, res, next) {
 /* GET view a single campaign */
 router.get('/view', async function(req, res, next) {
     var campaign = await Campaigns.viewSingleCampaign(req.query.key);
+    var donations = await Campaigns.getChargeInfo(req.query.key);
     res.render('campaigns/view',
     { 
         title: campaign[0].title,
         campaignkey: campaign[0].key,
         campaigndetail: campaign[0].campaigndetail,
-        goalAmount: campaign[0].goalAmount
+        goalAmount: campaign[0].goalAmount,
+        donations: donations
+        // donationBy: donations[0].customer,
+        // donationAmount: donations[0].charge
     });
 });
 
@@ -84,7 +87,6 @@ router.post('/donate/charge', async (req, res) => {
             customer,
             campaign_id
         );
-
         // Save data to mongodb
         await Campaigns.addNewCharge(customer, charge, campaign_id);
         console.log("--- Sent data to mongo ---");

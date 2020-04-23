@@ -1,4 +1,5 @@
 const dbService = require('../services/db');
+var numeral = require('numeral');
 
 class Campaign {
 
@@ -33,10 +34,16 @@ class Campaign {
     static async addNewCharge(customerData, chargeData, id) {
         const charge = await dbService.db.collection('charges').insertOne({
             campaign_id: id,
-            customer: chargeData,
-            charge: chargeData
+            customer: customerData.name,
+            charge: chargeData.amount
         });
         return charge;
+    }
+
+    static async getChargeInfo(id) {
+        const info = await dbService.db.collection('charges').find({campaign_id: id}).toArray();
+        console.log("--- Charges found " + JSON.stringify(info, null, 1));
+        return info;
     }
 
 }

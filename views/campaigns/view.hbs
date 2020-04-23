@@ -10,7 +10,14 @@
             <p>{{ campaigndetail }}</p>
             {{#if goalAmount}}
             <p>Goal Amount: ${{ goalAmount }}</p>
+
+            <hr style="border: 1px solid white" />
+
             {{/if}}
+
+            {{#each donations}}
+                <p>{{this.customer}} donated ${{this.charge}} cents!</p>
+            {{/each}}
 
             <a href="/campaigns" class="btn btn-danger">
                 <img src="https://svgshare.com/i/KL6.svg" alt="back icon" class="d-inline-block" width="20"
