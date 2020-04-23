@@ -12,6 +12,8 @@ router.get('/', async function(req, res, next) {
     if (req.isAuthenticated()) {
         niceUser = new User(req.user);
         var getCampaigns = await Campaigns.getCampaigns();
+        var totalSum = await Campaigns.calculateSum('XJ4L1');
+        console.log("--- Sum calculated in root: " + totalSum);
         res.render('campaigns/index',
         { 
             title: "All Campaigns",

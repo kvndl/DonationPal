@@ -46,6 +46,19 @@ class Campaign {
         return info;
     }
 
+    static async calculateSum(id) {
+        const sum = await dbService.db.collection('charges')
+        .aggregate([
+            { $match: { campaign_id: id } },
+            { $group: { 
+                _id: null,
+                "Total Sales": { $sum: "$charge" }
+            }}
+        ]).toArray();
+        console.log("--- Sum calculated for " + id + " " + sum);
+        return sum;
+    }
+
 }
 
 module.exports = Campaign;
