@@ -6,6 +6,7 @@
             <form method='POST' action='/campaigns/save'>
                 <div class="form-group">
                     <label for="titleInput">Title</label>
+                    <input type="hidden" name="key" value="{{key}}"/>
                     <input class="form-control" type='text' name='title' value='' id="titleInput"
                         placeholder="Give this beauty a name" required />
                 </div>

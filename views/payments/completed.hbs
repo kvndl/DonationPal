@@ -1,0 +1,30 @@
+<br /><br /><br />
+<div class="container">
+    <div class="row text-light">
+        <div class="col">
+            <h1>Donation Success!</h1>
+            <p>Thank you for your donation, details below.</p>
+            <br />
+            <a href="/campaigns/view?key={{ campaign_id }}" class="btn btn-danger">
+                <img src="https://svgshare.com/i/KL6.svg" alt="back icon" class="d-inline-block" width="20"
+                    height="20" />
+                Back to campaign</a>
+            <hr style="border: 1px solid white" />
+            Customer: <br />
+            {{#each customer}}
+
+            {{@key}}: {{this}} <br />
+
+            {{/each}}
+
+            <br /><br />
+
+            Charge: <br />
+            {{#each charge}}
+
+            {{@key}}: {{this}} <br />
+
+            {{/each}}
+        </div>
+    </div>
+</div>

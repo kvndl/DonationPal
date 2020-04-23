@@ -3,21 +3,10 @@ var router = express.Router();
 // const campaigns = require('../models/campaign-memory');
 const Campaigns = require('../models/Campaign');
 const User = require('../models/user');
+const stripe = require('stripe')(process.env.STRIPE_SECRET_KEY);
 
 /* GET listing of all campaigns */
 router.get('/', async function(req, res, next) {
-
-    // let keylist = await campaigns.keylist();
-    // let keyPromises = keylist.map( key => {
-    //     return campaigns.read(key);
-    // });
-
-    // let campaignlist = await Promise.all(keyPromises);
-    // const campaignlisting = async () => {
-    //     const everything = await dbService.db.collection('campaigns').find({});
-    //     console.log("--- Everything from Mongo " + everything);
-    //     return everything;
-    // }
 
     // check if user is logged in
     if (req.isAuthenticated()) {
@@ -49,9 +38,13 @@ router.get('/view', async function(req, res, next) {
 });
 
 // GET to the add campaign form
-router.get('/add', function(req, res, next) {
+router.get('/add', async function(req, res, next) {
     if (req.isAuthenticated()) {
-        res.render('campaigns/edit', { title: "Add a Campaign" });
+        let theKey = await makeid(5);
+        res.render('campaigns/edit', {
+            title: "Add a Campaign",
+            key: theKey
+        });
     }
 });
 
@@ -59,9 +52,9 @@ router.get('/add', function(req, res, next) {
 router.post('/save', async (req, res, next) => {
     // Logic to save new campaign
     var campaign;
-    let theKey = await makeid(5);
+    // let theKey = await makeid(5);
     campaign = await Campaigns.addCampaign({
-        key: theKey,
+        key: req.body.key,
         title: req.body.title,
         goalAmount: req.body.goalAmount,
         campaigndetail: req.body.campaigndetail
@@ -71,10 +64,48 @@ router.post('/save', async (req, res, next) => {
     console.log("--- Saving a new campaign ---");
 });
 
+// GET new donation
+router.get('/donate', async (req, res, next) => {
+    var key = req.query.key;
+    console.log("--- Key found from query: " + key)
+    res.render('payments/index', {
+        title: "Make a donation",
+        campaign_id: key
+    });
+});
+
+// POST a payment to Stripe
+router.post('/donate/charge', async (req, res) => {
+    try {
+        var campaign_id = req.body.campaign_id;
+        var customer = await createCustomer(req);
+        var charge = await createCharge(
+            req.body.amount,
+            customer,
+            campaign_id
+        );
+
+        // Save data to mongodb
+        await Campaigns.addNewCharge(customer, charge, campaign_id);
+        console.log("--- Sent data to mongo ---");
+
+        res.render('payments/completed', {
+            customer: customer,
+            charge: charge,
+            campaign_id: campaign_id
+        });
+    } catch (err) {
+        res.render('oopsie', {
+            errorMsg: err
+        });
+    }
+});
+
 module.exports = router;
 
 // Helper Functions
 
+// Create "random" key from dictionary
 function makeid(length) {
     var result           = '';
     var characters       = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
@@ -84,4 +115,34 @@ function makeid(length) {
     }
     console.log('--- Unique ID generated: ' + result + ' ---');
     return result;
+}
+
+// Create new Stripe customer object
+const createCustomer = async function(req) {
+    var customer = await stripe.customers.create({
+
+        name: req.body.name,
+        email: req.body.email,
+        source: req.body.stripeToken
+
+    });
+    return customer;
+}
+
+// Create the actual charge sent to Stripe
+const createCharge = async function(amount, customer, campaign_id) {
+
+    var charge = await stripe.charges.create({
+
+        amount: amount * 100,
+        currency: "usd",
+        customer: customer.id,
+        description: "Your donation to the ABC campaign",
+        metadata: {
+            campaign_id: campaign_id
+        }
+
+    });
+    console.log('Charge: ' + JSON.stringify(charge, null, 1));
+    return charge;
 }

@@ -30,6 +30,15 @@ class Campaign {
         return single;
     }
 
+    static async addNewCharge(customerData, chargeData, id) {
+        const charge = await dbService.db.collection('charges').insertOne({
+            campaign_id: id,
+            customer: chargeData,
+            charge: chargeData
+        });
+        return charge;
+    }
+
 }
 
 module.exports = Campaign;

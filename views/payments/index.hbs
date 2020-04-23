@@ -1,47 +1,72 @@
 <script src="https://js.stripe.com/v3/"></script>
 
-<h1>Make a Payment</h1>
+<br /><br /><br />
+<div class="container">
+    <div class="row text-light">
+        <div class="col">
+            <h1>{{title}}</h1>
+            <p>Campaign Key: {{ campaign_id }}</p>
+            <hr style="border: 1px solid white" />
+            <main class="loading">
+                <div id="checkout">
+                    <form method='POST' action='/campaigns/donate/charge' id="payment-form">
+                        <input type="hidden" name="campaign_id" value="{{ campaign_id }}" />
+                        {{!-- User Info --}}
+                        <section>
+                            <p>Billing Information</p>
+                            <fieldset>
+                                <div class="form-group">
+                                    <label for="nameInput">Name</label>
+                                    <input class="form-control" type='text' name='name' value='' id="nameInput"
+                                        placeholder="Full Name" required />
+                                </div>
+                                <div class="form-group">
+                                    <label for="emailInput">Email</label>
+                                    <input class="form-control" type='email' name='email' value='' id="emailInput"
+                                        placeholder="username@domain.com" required />
+                                </div>
+                                <div class="form-group">
+                                    <label for="amount">Donation Amount</label>
+                                    <select class="form-control" id="amount" name="amount">
+                                        <option value=5>$5</option>
+                                        <option value=10>$10</option>
+                                        <option value=15>$15</option>
+                                        <option value=25>$25</option>
+                                        <option value=50>$50</option>
+                                    </select>
+                                </div>
+                            </fieldset>
+                        </section>
+                        {{!-- Payment Info --}}
+                        <section>
+                            <p>Payment Information</p>
+                            <div class="reset-this">
+                                <div class="form-row">
+                                    <label for="card-element">
+                                        Credit or debit card
+                                    </label>
+                                    <div id="card-element">
+                                        <!-- A Stripe Element will be inserted here. -->
+                                    </div>
 
-<main id="main" class="loading">
+                                    <!-- Used to display form errors. -->
+                                    <div id="card-errors" role="alert"></div>
+                                </div>
+                            </div>
+                        </section>
+                        <br/><p>PS: Bootstrap is a blessing and a curse</p>
+                        <a href="/campaigns/view?key={{ campaign_id }}" class="btn btn-danger">
+                            <img src="https://svgshare.com/i/KL6.svg" alt="back icon" class="d-inline-block" width="20"
+                                height="20" />
+                            Back to campaign</a>
+                        <button class="btn btn-success">Submit Payment</button>
 
-  <div id="checkout">
-    <form action="payments/charge" method="POST" id="payment-form">
-    <section>
-      <h2>Billing Information</h2>
-      <input type="hidden" name="campaign_id" value="1234567890" />
-      <fieldset>
-        <label>
-          <span>Name</span>
-          <input type="text" name="name" placeholder="Name" class="field" required>
-        </label>
-        <label>
-          <span>Email</span>
-          <input type="email" name="email" placeholder="Email" class="field" required>
-        </label>
-        <label>
-          <span>Donation Amount</span>
-          <select name="amount" class="field">
-            <option value=5>$5</option>
-            <option value=10>$10</option>
-            <option value=15>$15</option>
-            <option value=25>$25</option>
-            <option value=50>$50</option>
-          </select>
-        </label>
-      </fieldset>
-    </section>
-    <section>
-      <h2>Payment Information</h2>
-      <fieldset>
-        <label>
-          <span>Card</span>
-          <div id="card-element" class="field"></div>
-        </label>
-      </fieldset>
-        <button>Submit Payment</button>
-    </form>
-  </div>
-  <div id="card-errors" role="alert"></div>
-</main>
+                    </form>
+                    <div id="card-errors" role="alert"></div>
+                </div>
+            </main>
+        </div>
+    </div>
+</div>
 
-<script src="javascripts/stripe_form.js"></script>
+<script src="../javascripts/stripe-form.js"></script>
