@@ -1,5 +1,5 @@
 const dbService = require('../services/db');
-var numeral = require('numeral');
+// var numeral = require('numeral');
 
 class Campaign {
 
@@ -32,10 +32,18 @@ class Campaign {
     }
 
     static async addNewCharge(customerData, chargeData, id) {
+        console.log('--- in addNewCharge function ---');
+        console.log('--- Customer Data ---');
+        console.log(customerData.name);
+        console.log('--- Charge Data ---');
+        console.log(chargeData.amount);
+        console.log('--- Receipt URL ---');
+        console.log(chargeData.receipt_url)
         const charge = await dbService.db.collection('charges').insertOne({
             campaign_id: id,
             customer: customerData.name,
-            charge: chargeData.amount
+            charge: chargeData.amount,
+            receipt: chargeData.receipt_url
         });
         return charge;
     }
@@ -52,10 +60,10 @@ class Campaign {
             { $match: { campaign_id: id } },
             { $group: { 
                 _id: null,
-                "Total Sales": { $sum: "$charge" }
+                "TotalSales": { $sum: "$charge" }
             }}
         ]).toArray();
-        console.log("--- Sum calculated for " + id + " " + sum);
+        console.log("--- Sum calculated for " + id + " " + JSON.stringify(sum[0], null, 1));
         return sum;
     }
 

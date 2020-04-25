@@ -1,29 +1,30 @@
 <br /><br /><br />
 <div class="container">
-    <div class="row text-light">
+    <div class="h-100 row text-light">
         <div class="col">
             <br />
-            <h1>{{ title }}</h1>
-
-            <p>Key: {{ campaignkey }}</p>
-
-            <p>{{ campaigndetail }}</p>
-            {{#if goalAmount}}
-            <p>Goal Amount: ${{ goalAmount }}</p>
-
-            <hr style="border: 1px solid white" />
-
-            {{/if}}
-
+            <div style="width: 80vw;">
+                <div class="card bg-light text-dark text-center mx-auto" style="width: 50em;">
+                    <div class="card-header">{{ title }}</div>
+                    <div class="card-body">
+                        <p class="card-text">Key: {{ campaignkey }}</p>
+                        <p class="card-text">{{ campaigndetail }}</p>
+                        {{#if goalAmount}}
+                        <p class="card-text">Goal Amount: ${{ goalAmount }}</p>
+                        {{/if}}
+                        <a href="/campaigns" class="btn btn-danger">
+                            <img src="https://svgshare.com/i/KL6.svg" alt="back icon" class="d-inline-block" width="20"
+                                height="20" />
+                            Back to list</a>
+                        <a href="/campaigns/donate?key={{ campaignkey }}" class="btn btn-success">Make a donation</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col">
             {{#each donations}}
-                <p>{{this.customer}} donated ${{this.charge}} cents!</p>
+            <p>{{this.customer}} donated ${{this.charge}} cents!</p>
             {{/each}}
-
-            <a href="/campaigns" class="btn btn-danger">
-                <img src="https://svgshare.com/i/KL6.svg" alt="back icon" class="d-inline-block" width="20"
-                    height="20" />
-                Back to list</a>
-            <a href="/campaigns/donate?key={{ campaignkey }}" class="btn btn-success">Make a donation</a>
         </div>
     </div>
 </div>

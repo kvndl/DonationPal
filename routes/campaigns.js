@@ -94,15 +94,31 @@ router.post('/donate/charge', async (req, res) => {
         console.log("--- Sent data to mongo ---");
 
         res.render('payments/completed', {
-            customer: customer,
-            charge: charge,
-            campaign_id: campaign_id
+            customer: customer.name,
+            charge: charge.amount,
+            campaign_id: campaign_id,
+            receipt: charge.receipt_url
         });
     } catch (err) {
         res.render('oopsie', {
             errorMsg: err
         });
     }
+});
+
+router.post('/search', function(req, res, next) {
+    var key = req.body.search_key;
+    res.redirect(`/campaigns/view?key=${key}`);
+});
+
+// Test out page layouts
+router.get('/test', function(req, res, next) {
+    res.render('payments/completed', {
+        customer: 'Kevin Noodle',
+        charge: '$500',
+        campaign_id: 'fH4d8',
+        receipt: 'https://pay.stripe.com/receipts/acct_1GXj1yLN8Ab8bnm9/ch_1GbE88LN8Ab8bnm9zmnwxy8I/rcpt_H9XCTWNKTOx9jxrpDivcdKuDiTba5Hn'
+    });
 });
 
 module.exports = router;

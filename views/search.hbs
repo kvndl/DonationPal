@@ -1,9 +1,23 @@
-<br/><br/><br/>
+<br /><br /><br />
 <div class="h-100 row text-light">
-    <div class="col">
+    <div class="col parent">
         <br />
-        <div id="centerThis">
-            <p>I see you tried to search. I am here to tell you it doesn't work.</p>
+        <div style="width: 80vw;">
+            <h1>Search Results:</h1>
+            <br />
+            <div class="card bg-light text-dark text-center mx-auto" style="width: 18em;">
+                <div class="card-header">Payment Details</div>
+                <div class="card-body">
+                    <p class="card-text">Campaign ID: {{ campaign_id }}</p>
+                    <p class="card-text">Name: {{ customer }}</p>
+                    <p class="card-text">Total Charges: {{ charge }}</p>
+                    <a href="/campaigns/view?key={{ campaign_id }}" class="btn btn-danger">
+                        <img src="https://svgshare.com/i/KL6.svg" alt="back icon" class="d-inline-block" width="20" height="20" />
+                        Back
+                    </a>
+                    <a href="{{ receipt }}" class="btn btn-primary">View Full Receipt</a>
+                </div>
+            </div>
         </div>
     </div>
 </div>

@@ -43,7 +43,7 @@ const createCharge = async function(amount, customer, campaign_id) {
         amount: amount * 100,
         currency: "usd",
         customer: customer.id,
-        description: "Your donation to the ABC campaign",
+        description: "Donation for the Greater Good",
         metadata: {
             campaign_id: campaign_id
         }
